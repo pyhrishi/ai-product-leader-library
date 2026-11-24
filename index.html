@@ -272,6 +272,40 @@ button.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc);fon
   #rail{padding-top:env(safe-area-inset-top)}
 }
 
+/* ---- native-feel mobile layer ---- */
+#railfoot{flex-wrap:wrap}
+@keyframes pgin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#page.in{animation:pgin .24s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){#page.in{animation:none}}
+#bnav button[aria-current="page"]{color:var(--acc)}
+#bnav button[aria-current="page"] svg{stroke-width:2.3}
+@media (max-width:860px){
+  #top{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:0;padding:calc(4px + env(safe-area-inset-top)) 6px 4px;min-height:calc(52px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--line);position:relative;z-index:5}
+  #top .btn{background:none;border:0;box-shadow:none;min-width:44px;min-height:44px;padding:0;display:flex;align-items:center;justify-content:center;color:var(--acc);border-radius:12px}
+  #top .btn:active{background:var(--panel2)}
+  #menu,#inst,#focusb,#bdata,#btheme{display:none!important}
+  #backb{grid-column:1;justify-self:start}
+  #backb[hidden]{display:none!important}
+  .tools .btn{white-space:nowrap;padding:0 12px;overflow-wrap:normal}
+  #backb .bt{display:none}
+  #top .crumb{grid-column:2;text-align:center;font:600 15px var(--sans);color:var(--ink);padding:0 4px}
+  #tsearch{grid-column:3;justify-self:end}
+  #bnav{border-top:0;box-shadow:0 -1px 0 var(--line);padding-top:4px}
+  #bnav button{font-size:11.5px;letter-spacing:.01em;transition:color .15s}
+  #bnav button:active svg{transform:scale(.88)}
+  #bnav svg{transition:transform .12s}
+  .hero h1,.hero2 h1{font-size:clamp(32px,9.4vw,44px);margin:8px 0 10px}
+  .hero .sub,.hero2 .sub{font-size:17px}
+  .hero,.hero2{padding-top:14px}
+  .portal,.card,.mcard,.vcard,.cont,.intent{transition:transform .12s}
+  .portal:active,.card:active,.mcard:active,.vcard:active,.cont:active,.intent:active,.btn:active{transform:scale(.98)}
+  .tools{display:grid;grid-template-columns:minmax(0,1fr) auto auto;box-sizing:border-box;gap:8px 8px;align-items:center;padding:10px}
+  .tools #pc{grid-column:1/-1;font-weight:600}
+  .tools .bar{grid-column:1/-1;order:0;width:100%;min-width:0;max-width:100%}
+  .tools label{grid-column:1/2;min-width:0;display:flex;align-items:center;gap:8px}
+  .tools label select{flex:1;min-width:0}
+}
+
 /* ---- iOS home-screen, accessibility and usability layer ---- */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior:none;background:var(--bg)}
 body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-touch-callout:none}
@@ -351,19 +385,19 @@ a{text-underline-offset:2px}
       <button id="sbtn" aria-label="Search all topics"><span>Search all topics</span><kbd>/</kbd></button>
     </div>
     <nav id="toc" aria-label="Library contents"></nav>
-    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button><button class="btn" id="rrefresh">Refresh</button></div>
+    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button><button class="btn" id="rrefresh">Refresh</button><button class="btn" id="rver" style="flex-basis:100%;min-height:36px;font-size:12px;color:var(--muted)">Version 7 · tap for screen info</button></div>
   </aside>
   <div id="scrim"></div>
   <div id="main">
     <div id="rp"></div>
     <header id="top">
-      <button class="btn" id="backb" hidden aria-label="Go back">‹ Back</button>
+      <button class="btn" id="backb" hidden aria-label="Go back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="bt"> Back</span></button>
       <button class="btn" id="menu" aria-label="Open contents" aria-expanded="false" aria-controls="rail">Contents</button>
       <div class="crumb" id="crumb"></div>
       <button class="btn" id="inst" style="display:none">Install app</button>
       <button class="btn" id="focusb" title="Hide the contents rail">Focus</button>
       <button class="btn" id="bdata">Backup</button>
-      <button class="btn" id="tsearch" aria-label="Search">Search</button>
+      <button class="btn" id="tsearch" aria-label="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
       <button class="btn" id="btheme" aria-label="Toggle light and dark theme">Theme</button>
     </header>
     <div id="scroll"><main id="page" tabindex="-1"><p class="md" role="status" style="padding:48px 0;color:var(--muted)">Loading the library…</p></main></div>
@@ -728,7 +762,7 @@ function render(){
     h=pg.over?renderPart(pg):renderModule(pg);
     var pv=PAGES[i-1],nx=PAGES[i+1];
     h+='<div class="nav">'+(pv?'<button class="btn" data-go="'+pv.id+'"><small>Previous</small>'+esc(label(pv))+"</button>":"<span></span>")+(nx?'<button class="btn nx" data-go="'+nx.id+'"><small>Next</small>'+esc(label(nx))+"</button>":"")+"</div>";
-    $("#crumb").textContent=pg.part.vol.title+" › "+(pg.part.num?"Part "+pg.part.num+": ":"")+pg.part.title+(pg.over?"":" › "+nm(pg.title));
+    $("#crumb").textContent=(window.matchMedia&&matchMedia("(max-width:860px)").matches)?(pg.over?pg.part.title:nm(pg.title)):pg.part.vol.title+" › "+(pg.part.num?"Part "+pg.part.num+": ":"")+pg.part.title+(pg.over?"":" › "+nm(pg.title));
     document.title=nm(pg.title)+" · AI Product Leader Library";
     S.lastRead=pg.id;
   }
@@ -745,6 +779,9 @@ function route(){
   var h=location.hash.replace("#","");
   if(h&&(LAND[h]||TOOLS[h]||PIDX[h]!==undefined)){S.last=h;S.lastSet=true}
   render();focusMain();
+  var pgEl=$("#page");pgEl.classList.remove("in");void pgEl.offsetWidth;pgEl.classList.add("in");
+  var cur=S.last==="home"?"home":S.last==="review"?"review":S.last==="quiz"?"quiz":TOOLS[S.last]?"toolkit":LAND[S.last]?"home":"menu";
+  [].forEach.call(document.querySelectorAll("#bnav button"),function(b){if(b.getAttribute("data-bn")===cur)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
 }
 function go(id){if(location.hash==="#"+id)route();else location.hash="#"+id;setRail(false);closeSearch()}
 window.addEventListener("hashchange",function(){route();saveLocal()});
@@ -1199,6 +1236,10 @@ $("#scrim").onclick=function(){setRail(false)};
 function closeDlg(){$("#dlg").classList.remove("on");if(dlgOpener&&dlgOpener.isConnected){try{dlgOpener.focus({preventScroll:true})}catch(e){}}dlgOpener=null}
 $("#rtheme").onclick=function(){$("#btheme").click()};
 $("#rbackup").onclick=function(){setRail(false);$("#bdata").click()};
+$("#rver").onclick=function(){
+  var cs=getComputedStyle(document.documentElement);
+  toast("inner "+innerWidth+"×"+innerHeight+" · screen "+screen.width+"×"+screen.height+" · standalone "+isStandalone());
+};
 $("#rrefresh").onclick=function(){
   toast("Refreshing to the latest version…");
   var jobs=[];
