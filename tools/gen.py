@@ -108,8 +108,7 @@ def write(s):
     fn = os.path.join(ROOT, "guides", "%s_%s.md" % (mod, s["id"]))
     body = build(s)
     open(fn, "w").write(body)
-    gi = os.path.join(ROOT, "guides", "index.json")
-    g = json.load(open(gi))
-    g["%s_%s" % (mod, s["id"])] = {"min": s["read_min"], "words": len(body.split()), "updated": "2026-11-24", "title": s["short"]}
-    json.dump(g, open(gi, "w"), indent=1)
+    md = os.path.join(ROOT, "guides", "_meta"); os.makedirs(md, exist_ok=True)
+    json.dump({"min": s["read_min"], "words": len(body.split()), "updated": "2026-11-24", "title": s["short"]},
+              open(os.path.join(md, "%s_%s.json" % (mod, s["id"])), "w"))
     print(s["id"], len(body.split()), "words")
