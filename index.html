@@ -277,6 +277,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior:non
 body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-touch-callout:none}
 #app{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;height:-webkit-fill-available;height:100dvh}
 html,body{width:100%;min-height:100vh;min-height:-webkit-fill-available;margin:0;padding:0;position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden}
+html.standalone,html.standalone body,html.standalone #app{height:var(--appH,100%)}
+html.standalone body{bottom:auto}
+html.standalone #app{bottom:auto}
+html.standalone #bnav{position:absolute}
 body.railopen #bnav{opacity:0;pointer-events:none;visibility:hidden}
 #scroll{-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 .btn,.card,.mcard,.vcard,.intent,.portal,.mc,.ban,.cont,.chip,#bnav button,.volh,.parth,.pg,.homeb,#sbtn{-webkit-user-select:none;user-select:none}
@@ -1143,6 +1147,18 @@ try{if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigat
 
 /* ---------- accessibility, focus, iOS and usability helpers ---------- */
 function isStandalone(){return !!(window.navigator.standalone||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches))}
+function fitScreen(){
+  if(!isStandalone())return;
+  var land=Math.abs(window.orientation||0)===90||(window.matchMedia&&matchMedia("(orientation: landscape)").matches);
+  var sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height);
+  var h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0,sh||0);
+  document.documentElement.style.setProperty("--appH",h+"px");
+}
+fitScreen();
+window.addEventListener("pageshow",fitScreen);
+window.addEventListener("orientationchange",function(){setTimeout(fitScreen,300)});
+window.addEventListener("resize",function(){var a=document.activeElement;if(!a||!/INPUT|TEXTAREA|SELECT/.test(a.tagName))fitScreen()});
+
 function themeDark(){var c=document.documentElement.getAttribute("data-theme");return c?c==="dark":matchMedia("(prefers-color-scheme:dark)").matches}
 function applyThemeMeta(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",themeDark()?"#0a0f15":"#f2f4f8")}
 var toastT=null;
