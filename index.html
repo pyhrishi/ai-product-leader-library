@@ -290,7 +290,7 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:env(safe-area
 .btn.pri,button.chip.on{color:var(--on)}
 .btn[hidden]{display:none}
 #railfoot{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
-#railfoot .btn{flex:1}
+#railfoot .btn{flex:1;padding-left:6px;padding-right:6px}
 #scrim{display:none}
 #tsearch,#backb{display:none}
 #backb:not([hidden]){display:inline-block}
@@ -347,7 +347,7 @@ a{text-underline-offset:2px}
       <button id="sbtn" aria-label="Search all topics"><span>Search all topics</span><kbd>/</kbd></button>
     </div>
     <nav id="toc" aria-label="Library contents"></nav>
-    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button></div>
+    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button><button class="btn" id="rrefresh">Refresh</button></div>
   </aside>
   <div id="scrim"></div>
   <div id="main">
@@ -1183,6 +1183,13 @@ $("#scrim").onclick=function(){setRail(false)};
 function closeDlg(){$("#dlg").classList.remove("on");if(dlgOpener&&dlgOpener.isConnected){try{dlgOpener.focus({preventScroll:true})}catch(e){}}dlgOpener=null}
 $("#rtheme").onclick=function(){$("#btheme").click()};
 $("#rbackup").onclick=function(){setRail(false);$("#bdata").click()};
+$("#rrefresh").onclick=function(){
+  toast("Refreshing to the latest version…");
+  var jobs=[];
+  try{if(navigator.serviceWorker)jobs.push(navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}))}catch(e){}
+  try{if(window.caches)jobs.push(caches.keys().then(function(k){return Promise.all(k.map(function(x){return caches.delete(x)}))}))}catch(e){}
+  Promise.all(jobs).catch(function(){}).then(function(){setTimeout(function(){location.reload()},350)});
+};
 $("#tsearch").onclick=openSearch;
 function trapTab(e,box){
   var f=box.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');f=Array.prototype.filter.call(f,function(x){return !x.disabled&&x.offsetParent!==null});
