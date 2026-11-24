@@ -272,9 +272,46 @@ button.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc);fon
   #rail{padding-top:env(safe-area-inset-top)}
 }
 
+/* ---- master guides ---- */
+.gcard{display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-left:4px solid var(--accA);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0;text-decoration:none;color:var(--ink);font-family:var(--sans);position:relative}
+button.gcard{text-align:left;width:100%;cursor:pointer;font:inherit}
+.gcard.soft{border-left-color:var(--line);background:transparent}
+.gcard .gk{font:600 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accA)}
+.gcard b{font:400 22px/1.2 var(--disp);color:var(--ink)}
+.gcard .gm{font-size:13.5px;color:var(--muted)}
+.gcard .gg{font-weight:600;color:var(--accA);margin-top:2px}
+.gcard .btn{align-self:flex-start;margin-top:6px}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.guide{max-width:78ch}
+.gbody{font-size:17px}
+.gbody .gh1{font:400 clamp(30px,6vw,46px)/1.05 var(--disp);margin:12px 0 18px}
+.gbody .gh2{font:400 clamp(24px,4.6vw,32px)/1.15 var(--disp);margin:34px 0 10px;scroll-margin-top:120px}
+.gbody .gh3{font:400 clamp(21px,4vw,26px)/1.2 var(--disp);margin:34px 0 8px;scroll-margin-top:120px;padding-top:6px}
+.gbody .gh4{font:600 16px var(--sans);margin:22px 0 6px}
+.gp{margin:0 0 14px;line-height:1.65}
+.gp.fm,.gp.fx,.gp.rem,.gp.xr{font-family:var(--sans);font-size:15px;border-radius:10px;padding:10px 14px;margin:12px 0}
+.gp.fm{background:color-mix(in srgb,var(--accC) 12%,var(--panel));border-left:4px solid var(--accC)}
+.gp.fx{background:color-mix(in srgb,var(--ok) 12%,var(--panel));border-left:4px solid var(--ok)}
+.gp.rem{background:var(--panel2);border:1px dashed var(--accA);font-weight:600}
+.gp.xr{color:var(--muted);padding:2px 0 2px 14px;border-left:2px solid var(--line);margin:8px 0}
+.gp.stamp{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--muted);overflow-wrap:anywhere}
+.ghr{border:0;border-top:1px solid var(--line);margin:28px 0}
+.twrap{overflow-x:auto;margin:12px 0 18px;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px}
+.gt{border-collapse:collapse;font:14px/1.45 var(--sans);min-width:100%}
+.gt th{background:var(--panel2);text-align:left;font-weight:600;position:sticky;top:0}
+.gt th,.gt td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top;min-width:110px}
+.gt tr:last-child td{border-bottom:0}
+.gcode{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:12px 0 18px;-webkit-overflow-scrolling:touch}
+.gcode code{white-space:pre;font:inherit;background:none;padding:0}
+.gl2{margin:0 0 14px;padding-left:22px}.gl2 li{margin:6px 0;line-height:1.55}
+.gd{border:1px solid var(--line);border-radius:12px;padding:4px 14px;margin:12px 0;background:var(--panel)}
+.gd summary{cursor:pointer;font:600 15px var(--sans);padding:12px 0;min-height:44px;display:flex;align-items:center}
+#gchips{position:sticky;top:0;z-index:3;padding:8px 0;background:var(--bg);overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+#gchips .chip{flex:0 0 auto;min-height:36px;padding:6px 12px}
+
 /* ---- native-feel mobile layer ---- */
 #railfoot{flex-wrap:wrap}
-@keyframes pgin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pgin{from{transform:translateY(8px)}to{transform:none}}
 #page.in{animation:pgin .24s cubic-bezier(.2,.7,.2,1)}
 @media (prefers-reduced-motion:reduce){#page.in{animation:none}}
 #bnav button[aria-current="page"]{color:var(--acc)}
@@ -385,7 +422,7 @@ a{text-underline-offset:2px}
       <button id="sbtn" aria-label="Search all topics"><span>Search all topics</span><kbd>/</kbd></button>
     </div>
     <nav id="toc" aria-label="Library contents"></nav>
-    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button><button class="btn" id="rrefresh">Refresh</button><button class="btn" id="rver" style="flex-basis:100%;min-height:36px;font-size:12px;color:var(--muted)">Version 7 · tap for screen info</button></div>
+    <div id="railfoot"><button class="btn" id="rtheme">Theme</button><button class="btn" id="rbackup">Backup</button><button class="btn" id="rrefresh">Refresh</button><button class="btn" id="rver" style="flex-basis:100%;min-height:36px;font-size:12px;color:var(--muted)">Version 8 · tap for screen info</button></div>
   </aside>
   <div id="scrim"></div>
   <div id="main">
@@ -428,6 +465,7 @@ a{text-underline-offset:2px}
 
 <script>
 "use strict";
+var GUIDE=null,GIDX={},GBODY={},gScroll=null;
 var D=null, PAGES=[], PIDX={}, PART={}, VOL={}, S={d:{},l:{},n:{},last:"home"};
 var VC={s:"--accS",a:"--accA",b:"--accB",c:"--accC"};
 var VDESC={
@@ -685,6 +723,7 @@ function renderHome(){
   h+="</div>";
   function stat(v,l){return '<div class="stat"><b>'+v+"</b><span>"+l+"</span></div>"}
   h+='<h2 class="sec">Your progress</h2><div class="prog"><div class="pr1"><div style="position:relative;width:120px;height:120px;color:var(--ink)">'+ring(p,120,9,"var(--accA)")+'<div class="c2"><b>'+p+'%</b></div></div><div><div class="stats" style="margin:0">'+stat(done.toLocaleString(),"topics ticked")+stat(modsDone+" / "+mods,"modules complete")+stat(lv3,"modules at level 3+")+stat(st+(st===1?" day":" days"),"current streak")+'</div></div></div><div class="hw"><div class="hl">Last 15 weeks</div>'+heat()+"</div></div>";
+  h+=guidesHtml();
   h+='<h2 class="sec">Your toolkit</h2>'+toolkitCards();
   h+='<div class="bans"><button class="ban" style="--vc:var(--accC)" data-go="elite"><span class="vl">Volume C</span><b>The Elite Layer</b><span>Judgment, evals, economics, go-to-market, agents in production, proof of work.</span></button><button class="ban" style="--vc:var(--accS)" data-go="s-2-1"><span class="vl">The bridge</span><b>Where the two volumes meet</b><span>See which part of Claude Code trains which part of AI product leadership.</span></button></div>';
   return h;
@@ -738,6 +777,7 @@ function renderModule(pg){
   h+='<h1 class="pt">'+esc(mm?mm[2]:nmx)+"</h1>";
   h+='<div class="chiprow pillrow">'+(mm?'<span class="pill ac">Module '+mm[1]+"</span>":"")+(pg.n?'<span class="pill">'+pg.n+" topics</span>":"")+(v.id==="b"?'<span class="pill" title="Command names, flags and limits change often. Recheck monthly.">Docs checked Nov 2026</span>':"")+"</div></div>";
   if(m.dt||m.pv){h+='<div class="aims">'+(m.dt?'<div class="aim"><div class="k">Aim for</div>'+inl(m.dt)+"</div>":"")+(m.pv?'<div class="aim pv"><div class="k">Prove it</div>'+inl(m.pv)+"</div>":"")+"</div>"}
+  h+=guideCard(pg);
   if(pg.n){
     var lv=S.l[pg.id]||0,opts=["0 · Untouched","1 · Aware","2 · Conversant","3 · Decision-capable","4 · Authoritative","5 · Frontier"].map(function(o,i){return '<option value="'+i+'"'+(i===lv?" selected":"")+">"+o+"</option>"}).join("");
     var d=cnt(pg.keys);
@@ -753,7 +793,13 @@ function renderModule(pg){
 function render(){
   var h,i=-1,pg=null;
   clearInterval(tmr);
-  if(special()){
+  if(GUIDE){
+    var gp=PAGES[PIDX[GUIDE]];setAcc(gp.part.vol.id);
+    h=renderGuideShell(gp);
+    $("#crumb").textContent=(window.matchMedia&&matchMedia("(max-width:860px)").matches)?"Master guide":"Master guide › "+nm(gp.title);
+    document.title="Master guide · "+nm(gp.title)+" · AI Product Leader Library";
+  }
+  else if(special()){
     if(TOOLS[S.last]){h=renderTool(S.last);$("#crumb").textContent=(TOOLINFO[S.last]||["Toolkit"])[0];document.title=(TOOLINFO[S.last]||["Toolkit"])[0]+" · AI Product Leader Library"}
     else{h=isHome()?renderHome():renderLanding(S.last);$("#crumb").textContent=isHome()?"Home":VOL[LAND[S.last]].title;document.title=(isHome()?"The AI Product Leader Library":VOL[LAND[S.last]].title+" · AI Product Leader Library");setAcc(isHome()?"s":LAND[S.last])}
   }
@@ -767,6 +813,7 @@ function render(){
     S.lastRead=pg.id;
   }
   $("#page").innerHTML=h;
+  if(GUIDE)loadGuide(GUIDE);
   if(pg&&!pg.over&&pg.n)refreshProgress(pg);
   var ts=$("#hsearch");if(ts)ts.onclick=openSearch;
   $("#scroll").scrollTop=0;$("#rp").style.width="0";
@@ -777,7 +824,9 @@ function label(pg){return pg.over?(pg.part.num?"Part "+pg.part.num+": ":"")+pg.p
 /* ---------- routing ---------- */
 function route(){
   var h=location.hash.replace("#","");
-  if(h&&(LAND[h]||TOOLS[h]||PIDX[h]!==undefined)){S.last=h;S.lastSet=true}
+  GUIDE=null;
+  if(/^g-/.test(h)&&PIDX[h.slice(2)]!==undefined&&GIDX[h.slice(2)]){GUIDE=h.slice(2);S.last=GUIDE;S.lastSet=true}
+  else if(h&&(LAND[h]||TOOLS[h]||PIDX[h]!==undefined)){S.last=h;S.lastSet=true}
   render();focusMain();
   var pgEl=$("#page");pgEl.classList.remove("in");void pgEl.offsetWidth;pgEl.classList.add("in");
   var cur=S.last==="home"?"home":S.last==="review"?"review":S.last==="quiz"?"quiz":TOOLS[S.last]?"toolkit":LAND[S.last]?"home":"menu";
@@ -888,6 +937,7 @@ var STOP=/^(the|and|for|with|your|how|when|what|why|that|from|not|use|using|are|
 function toks(t){return (String(t).toLowerCase().match(/[a-z][a-z0-9]{2,}/g)||[]).filter(function(w){return !STOP.test(w)}).map(function(w){return w.replace(/(ing|ed|es|s)$/,"")})}
 function mergeX(o){
   ["srs","proj"].forEach(function(k){if(!o[k])return;S[k]=S[k]||{};Object.keys(o[k]).forEach(function(x){if(!S[k][x]||(o[k][x].t||0)>(S[k][x].t||0))S[k][x]=o[k][x]})});
+  if(o.gp){S.gp=S.gp||{};Object.keys(o.gp).forEach(function(k){S.gp[k]=Math.max(S.gp[k]||0,o.gp[k])})}
   if(o.plan&&!S.plan)S.plan=o.plan;
   if(o.goal&&!S.goal)S.goal=o.goal;
   if(o.quiz){S.quiz=S.quiz||[];o.quiz.forEach(function(q){if(!S.quiz.some(function(z){return z.t===q.t}))S.quiz.push(q)})}
@@ -1173,6 +1223,8 @@ document.addEventListener("input",function(e){
 });
 /* ---------- mobile nav and install ---------- */
 document.addEventListener("click",function(e){
+  var gs=e.target.closest("[data-gs]");if(gs){var el=document.getElementById(gs.getAttribute("data-gs"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return}
+  var gi=e.target.closest('[data-act="ginputs"]');if(gi){copyText(guideInputs(gi.getAttribute("data-id")));return}
   var b=e.target.closest("[data-bn]");if(!b)return;
   var v=b.dataset.bn;if(v==="menu")setRail(!$("#rail").classList.contains("open"));else go(v==="home"?"home":v);
 });
@@ -1216,8 +1268,86 @@ function armed(btn,label){
   return false;
 }
 var NAV=[],backing=false,railOpener=null,dlgOpener=null,firstFocus=true;
-function noteNav(){var id=S.last;if(backing){backing=false;return}if(NAV[NAV.length-1]!==id)NAV.push(id);if(NAV.length>80)NAV.shift()}
-function goBack(){NAV.pop();var prev=NAV[NAV.length-1];if(prev&&prev!==S.last){backing=true;go(prev)}else{NAV=[];go("home")}}
+
+/* ---------- living-book master guides ---------- */
+function guideCard(pg){
+  var g=GIDX[pg.id],pr=(S.gp&&S.gp[pg.id])||0;
+  if(g){
+    return '<button class="gcard" data-go="g-'+pg.id+'"><span class="gk">Master guide</span><b>'+esc(g.title||"Read the full guide")+'</b><span class="gm">About '+g.min+' min read · failure modes, numbers, retrieval questions and a prove-it build'+(pr>0.02?" · "+Math.round(pr*100)+"% read":"")+'</span><span class="gg">'+(pr>0.02?"Continue":"Open")+' →</span></button>';
+  }
+  return '<div class="gcard soft"><span class="gk">Master guide</span><b>Not written yet</b><span class="gm">Add one to the book: copy this module\'s inputs, paste them after your master prompt, and send me the result.</span><button class="btn" data-act="ginputs" data-id="'+pg.id+'">Copy module inputs</button></div>';
+}
+function guideInputs(id){
+  var pg=PAGES[PIDX[id]],sp=metaSplit(pg),m=sp.m,topics=[];
+  (pg.blocks||[]).forEach(function(b){if(b.t==="ul"||b.t==="ol")b.items.forEach(function(it){if(it.id)topics.push(it.id+" "+(it.title||"")+": "+plain(it.x||""))})});
+  var sib=pg.part.pages.filter(function(x){return x.id!==id}).slice(0,6).map(function(x){return nm(x.title)});
+  return "MODULE: "+nm(pg.title)+"\nDEPTH TARGET: "+plain(m.dt||"L3 to L4")+"\nPROVE-IT: "+plain(m.pv||"[to be set]")+"\nSUB-TOPICS (cover every one, in order, none skipped):\n"+topics.map(function(t){return "  "+t}).join("\n")+"\nAUDIENCE: AI product leaders who must be trusted by engineers\nCURRENT YEAR / STATE OF THE ART: 2026\nPRIOR MODULES TO CROSS-REFERENCE: "+sib.join("; ");
+}
+function guidesHtml(){
+  var ids=Object.keys(GIDX).filter(function(k){return PIDX[k]!==undefined});
+  var h='<h2 class="sec">Master guides</h2><p class="md" style="color:var(--muted);margin-top:-6px">The living book. Each guide takes one module to depth: mechanisms, numbers, failure modes, a retrieval quiz and a build to prove it. New guides are added one module at a time.</p>';
+  if(!ids.length)return h+'<p class="md">None yet.</p>';
+  h+='<div class="gl">';
+  ids.forEach(function(k){var pg=PAGES[PIDX[k]],pr=(S.gp&&S.gp[k])||0;h+='<button class="gcard" data-go="g-'+k+'"><span class="gk">'+esc(nm(pg.title).replace(/^Module\s+/,"Module "))+'</span><b>'+esc(GIDX[k].title||"")+'</b><span class="gm">'+GIDX[k].min+" min"+(pr>0.02?" · "+Math.round(pr*100)+"% read":"")+'</span></a>'});
+  return h+"</div>";
+}
+function mdInline(t){return inl(t)}
+function slug(t){return t.toLowerCase().replace(/[^a-z0-9.]+/g,"-").replace(/\./g,"-").replace(/^-+|-+$/g,"")}
+function mdToHtml(src){
+  var L=src.replace(/\r/g,"").split("\n"),i=0,out=[];
+  function para(buf){if(!buf.length)return;var t=buf.join(" ").trim();if(!t)return;var c="",tt0=t.replace(/^\*\*/,"");
+    if(/^The failure mode:/.test(tt0))c=" fm";else if(/^The fix:/.test(tt0))c=" fx";else if(/^If you remember one thing:/.test(tt0))c=" rem";else if(/^Cross-references:/.test(tt0))c=" xr";else if(/^CONFORMANCE/.test(tt0))c=" stamp";
+    out.push('<p class="gp'+c+'">'+mdInline(t)+"</p>")}
+  var buf=[];
+  function flush(){para(buf);buf=[]}
+  while(i<L.length){
+    var ln=L[i];
+    if(/^```/.test(ln)){flush();var code=[];i++;while(i<L.length&&!/^```/.test(L[i])){code.push(L[i]);i++}i++;out.push('<pre class="gcode" tabindex="0"><code>'+esc(code.join("\n"))+"</code></pre>");continue}
+    if(/^:::details/.test(ln)){flush();var tt=ln.replace(/^:::details\s*/,""),inner=[];i++;while(i<L.length&&!/^:::\s*$/.test(L[i])){inner.push(L[i]);i++}i++;out.push('<details class="gd"><summary>'+esc(tt)+"</summary>"+mdToHtml(inner.join("\n"))+"</details>");continue}
+    var hm=/^(#{1,4})\s+(.*)$/.exec(ln);
+    if(hm){flush();var lv=hm[1].length,tx=hm[2],idm=/^(\d+\.\d+\.\d+)/.exec(tx);
+      out.push("<h"+(lv+1)+' class="gh'+lv+'"'+(idm?' id="gs-'+idm[1].replace(/\./g,"-")+'"':"")+">"+mdInline(tx)+"</h"+(lv+1)+">");i++;continue}
+    if(/^---+\s*$/.test(ln)){flush();out.push('<hr class="ghr">');i++;continue}
+    if(/^\|/.test(ln)&&i+1<L.length&&/^\|[\s:|-]+\|?\s*$/.test(L[i+1])){
+      flush();var rows=[];while(i<L.length&&/^\|/.test(L[i])){rows.push(L[i]);i++}
+      function cells(r){return r.replace(/^\||\|\s*$/g,"").split("|").map(function(c){return c.trim()})}
+      var hd=cells(rows[0]),t='<div class="twrap" tabindex="0" role="group" aria-label="Table, scrolls sideways"><table class="gt"><thead><tr>'+hd.map(function(c){return "<th>"+mdInline(c)+"</th>"}).join("")+"</tr></thead><tbody>";
+      for(var r=2;r<rows.length;r++)t+="<tr>"+cells(rows[r]).map(function(c){return "<td>"+mdInline(c)+"</td>"}).join("")+"</tr>";
+      out.push(t+"</tbody></table></div>");continue}
+    var lm=/^(\s*)(?:(\d+)\.|[-*])\s+(.*)$/.exec(ln);
+    if(lm){flush();var ord=!!lm[2],items=[];while(i<L.length){var m2=/^(\s*)(?:(\d+)\.|[-*])\s+(.*)$/.exec(L[i]);if(!m2||!!m2[2]!==ord)break;var txt=m2[3];i++;while(i<L.length&&/^\s{2,}\S/.test(L[i])&&!/^\s*(?:\d+\.|[-*])\s/.test(L[i])){txt+=" "+L[i].trim();i++}items.push("<li>"+mdInline(txt)+"</li>")}
+      out.push((ord?'<ol class="gl2">':'<ul class="gl2">')+items.join("")+(ord?"</ol>":"</ul>"));continue}
+    if(/^\s*$/.test(ln)){flush();i++;continue}
+    buf.push(ln);i++;
+  }
+  flush();
+  return out.join("");
+}
+function renderGuideShell(pg){
+  var g=GIDX[pg.id]||{};
+  return '<div class="guide"><div class="mhead"><div class="eyebrow">Master guide · '+esc(pg.part.vol.title)+'</div><div class="chiprow pillrow"><span class="pill ac">About '+(g.min||"?")+' min</span><span class="pill">Updated '+esc(g.updated||"")+'</span><button class="pill" data-go="'+pg.id+'" style="cursor:pointer">Module topics</button></div></div><div id="gchips" class="chiprow" role="navigation" aria-label="Sections in this guide"></div><div id="gbody" class="gbody" aria-live="polite"><p class="md" style="color:var(--muted)">Loading the guide…</p></div></div>';
+}
+function loadGuide(id){
+  function show(txt){
+    if(GUIDE!==id)return;
+    var el=$("#gbody");if(!el)return;
+    el.innerHTML=mdToHtml(txt);
+    var first=el.querySelector("h2.gh1");if(first){first.setAttribute("id","gtitle");first.className="pt gh1"}
+    var ch="";[].forEach.call(el.querySelectorAll("h3[id^=gs-]"),function(h){var m=/^(\d+\.\d+\.\d+)\s*[—-]\s*(.*)$/.exec(h.textContent);ch+='<button class="chip" data-gs="'+h.id+'">'+esc(m?m[1]:h.textContent)+"</button>"});
+    var tb=$("#gchips");if(tb)tb.innerHTML=ch;
+    var pr=(S.gp&&S.gp[id])||0;
+    if(pr>0.05&&pr<0.97){var sc=$("#scroll");setTimeout(function(){sc.scrollTop=pr*(sc.scrollHeight-sc.clientHeight)},60);toast("Resumed at "+Math.round(pr*100)+"%")}
+    var sc2=$("#scroll"),tk=0;
+    if(gScroll)sc2.removeEventListener("scroll",gScroll);
+    gScroll=function(){if(GUIDE!==id)return;var now=Date.now();if(now-tk<800)return;tk=now;var f=sc2.scrollTop/Math.max(1,sc2.scrollHeight-sc2.clientHeight);S.gp=S.gp||{};if(f>(S.gp[id]||0)){S.gp[id]=Math.round(f*100)/100;save()}};
+    sc2.addEventListener("scroll",gScroll,{passive:true});
+  }
+  if(GBODY[id])return show(GBODY[id]);
+  fetch("guides/"+id+".md").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){GBODY[id]=t;show(t)}).catch(function(){var el=$("#gbody");if(el)el.innerHTML='<p role="alert" class="md">This guide could not load. Check your connection and try again.</p>'});
+}
+function curId(){return GUIDE?"g-"+GUIDE:S.last}
+function noteNav(){var id=curId();if(backing){backing=false;return}if(NAV[NAV.length-1]!==id)NAV.push(id);if(NAV.length>80)NAV.shift()}
+function goBack(){NAV.pop();var prev=NAV[NAV.length-1];if(prev&&prev!==curId()){backing=true;go(prev)}else{NAV=[];go("home")}}
 $("#backb").onclick=goBack;
 function afterRender(){noteNav();$("#backb").hidden=isHome()}
 function focusMain(){
@@ -1272,7 +1402,7 @@ function bootExtras(){
 }
 
 /* ---------- boot ---------- */
-fetch("data.json").then(function(r){return r.json()}).then(function(j){
+fetch("data.json").then(function(r){return r.json()}).then(function(j){return fetch("guides/index.json").then(function(r){return r.ok?r.json():{}}).catch(function(){return {}}).then(function(g){GIDX=g||{};return j})}).then(function(j){
   D=j;index();loadLocal();initTools();
   if(!LAND[S.last]&&PIDX[S.last]!==undefined)S.lastRead=S.last;
   S.last="home";S.lastSet=true;

@@ -48,3 +48,9 @@ This rewrites `data.json`. Topic lines use the form `- **4.2.1 Title:** micro-to
 ## Freshness
 
 Command names, flags, prices and limits change often. Recheck Claude Code details monthly against the official docs.
+
+## Master guides (the living book)
+
+Each module can have a long-form master guide in `guides/<module-id>.md` (for example `guides/a-4-8.md`), registered in `guides/index.json`. The app shows a "Master guide" card on that module and a list on Home. Guides are written to a fixed contract: thesis and time budget, one section per sub-topic with failure modes and fixes, a retrieval quiz with folded answers, a prove-it build, a failure-mode checklist, resources and a conformance stamp.
+
+Modules without a guide show a "Copy module inputs" button that prepares the MODULE INPUTS block to paste after the master prompt.
