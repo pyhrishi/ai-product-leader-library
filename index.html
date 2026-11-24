@@ -275,6 +275,7 @@ button.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc);fon
 /* ---- master guides ---- */
 .gcard{display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-left:4px solid var(--accA);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0;text-decoration:none;color:var(--ink);font-family:var(--sans);position:relative}
 button.gcard{text-align:left;width:100%;cursor:pointer;font:inherit}
+.sgl{display:block;margin:0 14px 12px;padding:8px 12px;border:1px solid var(--line);border-left:3px solid var(--accA);border-radius:10px;background:transparent;color:var(--accA);font:600 13px var(--sans);cursor:pointer;min-height:40px}
 .gcard.soft{border-left-color:var(--line);background:transparent}
 .gcard .gk{font:600 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accA)}
 .gcard b{font:400 22px/1.2 var(--disp);color:var(--ink)}
@@ -600,6 +601,7 @@ function metaSplit(pg){
   });
   return {m:m,rest:rest};
 }
+var CURMOD="";
 function renderBlocks(blocks,v){
   var h="";
   blocks.forEach(function(b){
@@ -617,7 +619,7 @@ function renderBlocks(blocks,v){
           var key=v.id+":"+it.id,dn=S.d[key],ch=splitChips(it.x);
           h+='<li class="tc'+(dn?" dn":"")+'"><label><input type="checkbox" class="cb" data-k="'+esc(key)+'" aria-label="Mark '+esc(it.id)+' '+esc(it.title)+' as done"'+(dn?" checked":"")+'><div class="bd"><div class="th"><span class="id">'+esc(it.id)+'</span><span class="tt">'+esc(it.title)+"</span></div>";
           if(it.x){h+=ch?'<div class="chips">'+ch.map(function(c){return '<span class="chip">'+inl(c)+"</span>"}).join("")+"</div>":'<span class="tx">'+inl(it.x)+"</span>"}
-          h+="</div></label></li>";
+          h+="</div></label>";var gk=CURMOD+"_"+it.id;if(GIDX[gk])h+='<button class="sgl" data-go="g-'+gk+'">Deep guide · '+GIDX[gk].min+' min →</button>';h+="</li>";
         }else if(ord&&!it.d){n++;h+='<div class="ol1"><b class="n">'+n+'</b><span>'+inl(it.x)+"</span></div>"}
         else h+='<span class="plain d'+(it.d||0)+'">'+inl(it.x)+"</span>";
       });
@@ -783,7 +785,7 @@ function renderModule(pg){
     var d=cnt(pg.keys);
     h+='<div class="tools"><span id="pc"></span><div class="bar"><i id="pb"></i></div><label>Level <select id="lv" aria-label="Self-assessed level">'+opts+'</select></label><button class="btn" id="all">Tick all</button><button class="btn" id="none">Clear</button></div>';
   }
-  h+=renderBlocks(sp.rest,v);
+  CURMOD=pg.id;h+=renderBlocks(sp.rest,v);CURMOD="";
   if(m.src.length)h+='<div class="src">'+m.src.map(inl).join("<br>")+"</div>";
   h+=relatedHtml(pg);
   h+='<h2 class="sec">Your notes</h2><textarea class="notes" id="nt" placeholder="Explain this module in your own words. Log errors, questions and sources." aria-label="Notes for this page">'+esc(S.n[pg.id]||"")+"</textarea>";
@@ -794,7 +796,7 @@ function render(){
   var h,i=-1,pg=null;
   clearInterval(tmr);
   if(GUIDE){
-    var gp=PAGES[PIDX[GUIDE]];setAcc(gp.part.vol.id);
+    var gp=PAGES[PIDX[gMod(GUIDE)]];setAcc(gp.part.vol.id);
     h=renderGuideShell(gp);
     $("#crumb").textContent=(window.matchMedia&&matchMedia("(max-width:860px)").matches)?"Master guide":"Master guide › "+nm(gp.title);
     document.title="Master guide · "+nm(gp.title)+" · AI Product Leader Library";
@@ -825,7 +827,7 @@ function label(pg){return pg.over?(pg.part.num?"Part "+pg.part.num+": ":"")+pg.p
 function route(){
   var h=location.hash.replace("#","");
   GUIDE=null;
-  if(/^g-/.test(h)&&PIDX[h.slice(2)]!==undefined&&GIDX[h.slice(2)]){GUIDE=h.slice(2);S.last=GUIDE;S.lastSet=true}
+  if(/^g-/.test(h)&&GIDX[h.slice(2)]&&PIDX[gMod(h.slice(2))]!==undefined){GUIDE=h.slice(2);S.last=gMod(GUIDE);S.lastSet=true}
   else if(h&&(LAND[h]||TOOLS[h]||PIDX[h]!==undefined)){S.last=h;S.lastSet=true}
   render();focusMain();
   var pgEl=$("#page");pgEl.classList.remove("in");void pgEl.offsetWidth;pgEl.classList.add("in");
@@ -1270,6 +1272,7 @@ function armed(btn,label){
 var NAV=[],backing=false,railOpener=null,dlgOpener=null,firstFocus=true;
 
 /* ---------- living-book master guides ---------- */
+function gMod(k){return k.split("_")[0]}
 function guideCard(pg){
   var g=GIDX[pg.id],pr=(S.gp&&S.gp[pg.id])||0;
   if(g){
@@ -1284,8 +1287,8 @@ function guideInputs(id){
   return "MODULE: "+nm(pg.title)+"\nDEPTH TARGET: "+plain(m.dt||"L3 to L4")+"\nPROVE-IT: "+plain(m.pv||"[to be set]")+"\nSUB-TOPICS (cover every one, in order, none skipped):\n"+topics.map(function(t){return "  "+t}).join("\n")+"\nAUDIENCE: AI product leaders who must be trusted by engineers\nCURRENT YEAR / STATE OF THE ART: 2026\nPRIOR MODULES TO CROSS-REFERENCE: "+sib.join("; ");
 }
 function guidesHtml(){
-  var ids=Object.keys(GIDX).filter(function(k){return PIDX[k]!==undefined});
-  var h='<h2 class="sec">Master guides</h2><p class="md" style="color:var(--muted);margin-top:-6px">The living book. Each guide takes one module to depth: mechanisms, numbers, failure modes, a retrieval quiz and a build to prove it. New guides are added one module at a time.</p>';
+  var ids=Object.keys(GIDX).filter(function(k){return PIDX[k]!==undefined}),deep=Object.keys(GIDX).length-ids.length;
+  var h='<h2 class="sec">Master guides</h2><p class="md" style="color:var(--muted);margin-top:-6px">The living book. Each guide takes one module to depth: mechanisms, numbers, failure modes, a retrieval quiz and a build to prove it. New guides are added one module at a time.'+(deep?' '+deep+' deep guide'+(deep>1?'s':'')+' on single sub-topics, found inside each module page.':'')+'</p>';
   if(!ids.length)return h+'<p class="md">None yet.</p>';
   h+='<div class="gl">';
   ids.forEach(function(k){var pg=PAGES[PIDX[k]],pr=(S.gp&&S.gp[k])||0;h+='<button class="gcard" data-go="g-'+k+'"><span class="gk">'+esc(nm(pg.title).replace(/^Module\s+/,"Module "))+'</span><b>'+esc(GIDX[k].title||"")+'</b><span class="gm">'+GIDX[k].min+" min"+(pr>0.02?" · "+Math.round(pr*100)+"% read":"")+'</span></a>'});
@@ -1305,7 +1308,7 @@ function mdToHtml(src){
     if(/^```/.test(ln)){flush();var code=[];i++;while(i<L.length&&!/^```/.test(L[i])){code.push(L[i]);i++}i++;out.push('<pre class="gcode" tabindex="0"><code>'+esc(code.join("\n"))+"</code></pre>");continue}
     if(/^:::details/.test(ln)){flush();var tt=ln.replace(/^:::details\s*/,""),inner=[];i++;while(i<L.length&&!/^:::\s*$/.test(L[i])){inner.push(L[i]);i++}i++;out.push('<details class="gd"><summary>'+esc(tt)+"</summary>"+mdToHtml(inner.join("\n"))+"</details>");continue}
     var hm=/^(#{1,4})\s+(.*)$/.exec(ln);
-    if(hm){flush();var lv=hm[1].length,tx=hm[2],idm=/^(\d+\.\d+\.\d+)/.exec(tx);
+    if(hm){flush();var lv=hm[1].length,tx=hm[2],idm=/^(\d+(?:\.\d+){2,3})/.exec(tx);
       out.push("<h"+(lv+1)+' class="gh'+lv+'"'+(idm?' id="gs-'+idm[1].replace(/\./g,"-")+'"':"")+">"+mdInline(tx)+"</h"+(lv+1)+">");i++;continue}
     if(/^---+\s*$/.test(ln)){flush();out.push('<hr class="ghr">');i++;continue}
     if(/^\|/.test(ln)&&i+1<L.length&&/^\|[\s:|-]+\|?\s*$/.test(L[i+1])){
@@ -1324,7 +1327,7 @@ function mdToHtml(src){
   return out.join("");
 }
 function renderGuideShell(pg){
-  var g=GIDX[pg.id]||{};
+  var g=GIDX[GUIDE]||{};
   return '<div class="guide"><div class="mhead"><div class="eyebrow">Master guide · '+esc(pg.part.vol.title)+'</div><div class="chiprow pillrow"><span class="pill ac">About '+(g.min||"?")+' min</span><span class="pill">Updated '+esc(g.updated||"")+'</span><button class="pill" data-go="'+pg.id+'" style="cursor:pointer">Module topics</button></div></div><div id="gchips" class="chiprow" role="navigation" aria-label="Sections in this guide"></div><div id="gbody" class="gbody" aria-live="polite"><p class="md" style="color:var(--muted)">Loading the guide…</p></div></div>';
 }
 function loadGuide(id){
@@ -1333,7 +1336,7 @@ function loadGuide(id){
     var el=$("#gbody");if(!el)return;
     el.innerHTML=mdToHtml(txt);
     var first=el.querySelector("h2.gh1");if(first){first.setAttribute("id","gtitle");first.className="pt gh1"}
-    var ch="";[].forEach.call(el.querySelectorAll("h3[id^=gs-]"),function(h){var m=/^(\d+\.\d+\.\d+)\s*[—-]\s*(.*)$/.exec(h.textContent);ch+='<button class="chip" data-gs="'+h.id+'">'+esc(m?m[1]:h.textContent)+"</button>"});
+    var ch="";[].forEach.call(el.querySelectorAll("h3[id^=gs-]"),function(h){var m=/^(\d+(?:\.\d+){2,3})\s*[—-]\s*(.*)$/.exec(h.textContent);ch+='<button class="chip" data-gs="'+h.id+'">'+esc(m?m[1]:h.textContent)+"</button>"});
     var tb=$("#gchips");if(tb)tb.innerHTML=ch;
     var pr=(S.gp&&S.gp[id])||0;
     if(pr>0.05&&pr<0.97){var sc=$("#scroll");setTimeout(function(){sc.scrollTop=pr*(sc.scrollHeight-sc.clientHeight)},60);toast("Resumed at "+Math.round(pr*100)+"%")}
