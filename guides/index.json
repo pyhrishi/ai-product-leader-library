@@ -40,5 +40,167 @@
   "words": 5394,
   "updated": "2026-11-24",
   "title": "Definition: what Claude Code is, in one sentence you can defend"
+ },
+ "b-1-1_1.1.2": {
+  "min": 25,
+  "words": 2773,
+  "updated": "2026-11-24",
+  "title": "Chatbot versus agent: the operational difference"
+ },
+ "b-1-1_1.1.3": {
+  "min": 25,
+  "words": 2438,
+  "updated": "2026-11-24",
+  "title": "Where it runs: environments and surfaces"
+ },
+ "b-1-1_1.1.4": {
+  "min": 20,
+  "words": 1754,
+  "updated": "2026-11-24",
+  "title": "Same engine, many surfaces: what carries over"
+ },
+ "b-1-1_1.1.5": {
+  "min": 25,
+  "words": 2018,
+  "updated": "2026-11-24",
+  "title": "Delegate, do not dictate"
+ },
+ "b-1-1_1.1.6": {
+  "min": 25,
+  "words": 2176,
+  "updated": "2026-11-24",
+  "title": "What Claude Code is not: limits and safeguards"
+ },
+ "b-1-2_1.2.1": {
+  "min": 22,
+  "words": 1975,
+  "updated": "2026-11-24",
+  "title": "The loop: gather, act, verify, repeat"
+ },
+ "b-1-2_1.2.2": {
+  "min": 22,
+  "words": 2005,
+  "updated": "2026-11-24",
+  "title": "Built-in tools: the vocabulary of every control"
+ },
+ "b-1-2_1.2.3": {
+  "min": 22,
+  "words": 1850,
+  "updated": "2026-11-24",
+  "title": "Tool permissions: modes, rules and sandbox"
+ },
+ "b-1-2_1.2.4": {
+  "min": 25,
+  "words": 1829,
+  "updated": "2026-11-24",
+  "title": "What the model sees: system prompt, context and tool results"
+ },
+ "b-1-2_1.2.5": {
+  "min": 22,
+  "words": 1720,
+  "updated": "2026-11-24",
+  "title": "Subagents and background work"
+ },
+ "b-1-2_1.2.6": {
+  "min": 25,
+  "words": 1787,
+  "updated": "2026-11-24",
+  "title": "Hooks in the loop: deterministic control"
+ },
+ "b-1-2_1.2.7": {
+  "min": 20,
+  "words": 1559,
+  "updated": "2026-11-24",
+  "title": "Sessions as transcripts: resume, fork, rewind"
+ },
+ "b-1-2_1.2.8": {
+  "min": 20,
+  "words": 1544,
+  "updated": "2026-11-24",
+  "title": "The model layer: models, effort and speed"
+ },
+ "b-1-3_1.3.1": {
+  "min": 20,
+  "words": 1678,
+  "updated": "2026-11-24",
+  "title": "Requirements and install"
+ },
+ "b-1-3_1.3.2": {
+  "min": 20,
+  "words": 1597,
+  "updated": "2026-11-24",
+  "title": "Sign-in options and credential order"
+ },
+ "b-1-3_1.3.3": {
+  "min": 20,
+  "words": 1548,
+  "updated": "2026-11-24",
+  "title": "The first session: a small, reviewed change"
+ },
+ "b-1-3_1.3.4": {
+  "min": 18,
+  "words": 1551,
+  "updated": "2026-11-24",
+  "title": "The trust dialog and what runs before you trust"
+ },
+ "b-1-3_1.3.5": {
+  "min": 15,
+  "words": 1370,
+  "updated": "2026-11-24",
+  "title": "Updating and version control"
+ },
+ "b-1-3_1.3.6": {
+  "min": 15,
+  "words": 1366,
+  "updated": "2026-11-24",
+  "title": "Learning in-product: powerup, help, doctor"
+ },
+ "b-1-3_1.3.7": {
+  "min": 18,
+  "words": 1431,
+  "updated": "2026-11-24",
+  "title": "Troubleshooting install and login"
+ },
+ "b-1-4_1.4.1": {
+  "min": 18,
+  "words": 1592,
+  "updated": "2026-11-24",
+  "title": "Subscription usage: windows, pools and what counts"
+ },
+ "b-1-4_1.4.2": {
+  "min": 18,
+  "words": 1419,
+  "updated": "2026-11-24",
+  "title": "API and provider billing: ceilings before keys"
+ },
+ "b-1-4_1.4.3": {
+  "min": 15,
+  "words": 1336,
+  "updated": "2026-11-24",
+  "title": "Fast mode and effort: buying speed and depth"
+ },
+ "b-1-4_1.4.4": {
+  "min": 15,
+  "words": 1273,
+  "updated": "2026-11-24",
+  "title": "Feature availability by plan, provider and version"
+ },
+ "b-1-4_1.4.5": {
+  "min": 18,
+  "words": 1433,
+  "updated": "2026-11-24",
+  "title": "Cost control habits: five habits and one rule"
+ },
+ "b-1-5_1.5.1": {
+  "min": 25,
+  "words": 1761,
+  "updated": "2026-11-24",
+  "title": "Core terms: 23 words in five layers"
+ },
+ "b-1-5_1.5.2": {
+  "min": 12,
+  "words": 1301,
+  "updated": "2026-11-24",
+  "title": "Where to look: the right source for each question"
  }
 }
