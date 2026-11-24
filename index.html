@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0a0f15">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AI Library">
 <link rel="manifest" href="manifest.webmanifest">
@@ -274,7 +275,8 @@ button.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc);fon
 /* ---- iOS home-screen, accessibility and usability layer ---- */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior:none;background:var(--bg)}
 body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-touch-callout:none}
-#app{position:fixed;inset:0;height:auto}
+#app{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;height:-webkit-fill-available;height:100dvh}
+html,body{width:100%;min-height:100vh;min-height:-webkit-fill-available;margin:0;padding:0;position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden}
 body.railopen #bnav{opacity:0;pointer-events:none;visibility:hidden}
 #scroll{-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 .btn,.card,.mcard,.vcard,.intent,.portal,.mc,.ban,.cont,.chip,#bnav button,.volh,.parth,.pg,.homeb,#sbtn{-webkit-user-select:none;user-select:none}
